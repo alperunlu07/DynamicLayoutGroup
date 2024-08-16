@@ -1,7 +1,7 @@
 {
     "name": "com.alperunlu.dynamiclayoutgroup",
     "displayName": "Dynamic Layout Group",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "unity": "2019.2",
     "unityRelease": "0f1",
     "description": "This package for set dynamicly ui item positions",

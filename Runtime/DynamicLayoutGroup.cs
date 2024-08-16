@@ -13,13 +13,17 @@ namespace Alperunlu.Utils
         public Vector2 m_Spacing; 
 
         private List<RectTransform> rectChildren;
-        private float width, height; 
+        public float width, height; 
         private RectTransform rectT;
         
         private List<LayoutRow> layoutRows = new List<LayoutRow>();
         private LayoutRow row = new LayoutRow();
-
-
+        public bool setScrollViewContentHeight;
+        public float scrollViewOffsetHeight = 100f;
+        void Start()
+        {
+            UpdatePos();
+        }
 
 #if UNITY_EDITOR
         private void Update()
@@ -28,17 +32,25 @@ namespace Alperunlu.Utils
         }
 #endif 
         public void UpdatePos()
-        {
+        { 
             if (rectT == null)
                 rectT = GetComponent<RectTransform>();
             CalculateLayout();
             SetPositions();
+            if(setScrollViewContentHeight)
+            {
+                var sizeDelta = rectT.sizeDelta;
+                rectT.sizeDelta = new Vector2(sizeDelta.x, height + scrollViewOffsetHeight);
+            }
+                
         }
         private void CalculateLayout()
         {
             GetChildren();
-            width = rectT.sizeDelta.x - m_Padding.left - m_Padding.right;
-            height = rectT.sizeDelta.y - m_Padding.top - m_Padding.bottom;
+            //width = rectT.sizeDelta.x - m_Padding.left - m_Padding.right;
+            width = rectT.rect.width - m_Padding.left - m_Padding.right;
+            //height = rectT.sizeDelta.y - m_Padding.top - m_Padding.bottom;
+            //height = rectT.rect.height - m_Padding.top - m_Padding.bottom;
         }
         private void SetPositions()
         { 
@@ -104,12 +116,18 @@ namespace Alperunlu.Utils
                 for (int j = 0; j < row_.items.Count; j++)
                 {
                     if (j > 0)
-                        row_.items[j].anchoredPosition = new Vector2(row_.items[j - 1].anchoredPosition.x + row_.items[j - 1].sizeDelta.x + m_Spacing.x, (prevHeight + m_Padding.top) * -1f);
+                        row_.items[j].anchoredPosition = new Vector2(row_.items[j - 1].anchoredPosition.x + row_.items[j - 1].sizeDelta.x + m_Spacing.x, (prevHeight) * -1f);
                     else
-                        row_.items[j].anchoredPosition = new Vector2(m_Padding.left, (prevHeight + m_Padding.top) * -1f);
+                    {
+                        if(i == 0)
+                            row_.items[j].anchoredPosition = new Vector2(m_Padding.left, (prevHeight + m_Padding.top) * -1f);
+                        else
+                            row_.items[j].anchoredPosition = new Vector2(m_Padding.left, (prevHeight) * -1f); 
+                    } 
                 }
                 prevHeight += row_.height + m_Padding.top;
             }
+            height = prevHeight;
         }
         private void GetChildren()
         {
