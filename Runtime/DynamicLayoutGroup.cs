@@ -9,40 +9,43 @@ namespace Alperunlu.Utils
     public class DynamicLayoutGroup : MonoBehaviour
     {
         [SerializeField]
-        protected RectOffset m_Padding = new RectOffset();
-        public Vector2 m_CellSize;
-        public Vector2 m_Spacing;
+        protected RectOffset m_Padding = new RectOffset(); 
+        public Vector2 m_Spacing; 
 
-        public int preferredColumns, minColumns;
+        private List<RectTransform> rectChildren;
+        private float width, height; 
+        private RectTransform rectT;
+        
+        private List<LayoutRow> layoutRows = new List<LayoutRow>();
+        private LayoutRow row = new LayoutRow();
 
-        public List<RectTransform> rectChildren;
-        public float width, height;
-        public float maxWidth;
-        public RectTransform rectT;
 
-        private List<RectTransform> childs; 
-        public List<LayoutRow> layoutRows = new List<LayoutRow>();
-        public LayoutRow row = new LayoutRow();
+
+#if UNITY_EDITOR
         private void Update()
+        {
+            UpdatePos();
+        }
+#endif 
+        public void UpdatePos()
         {
             if (rectT == null)
                 rectT = GetComponent<RectTransform>();
             CalculateLayout();
             SetPositions();
         }
-
-        public void CalculateLayout()
+        private void CalculateLayout()
         {
             GetChildren();
             width = rectT.sizeDelta.x - m_Padding.left - m_Padding.right;
             height = rectT.sizeDelta.y - m_Padding.top - m_Padding.bottom;
         }
-        public void SetPositions()
+        private void SetPositions()
         { 
             SetGroupItems();
             AllignRows();
         }
-        void SetGroupItems()
+        private void SetGroupItems()
         {
             layoutRows = new List<LayoutRow>();
             row = new LayoutRow();
@@ -107,8 +110,8 @@ namespace Alperunlu.Utils
                 }
                 prevHeight += row_.height + m_Padding.top;
             }
-        } 
-        void GetChildren()
+        }
+        private void GetChildren()
         {
             rectChildren = new List<RectTransform>();
             foreach (RectTransform child in rectT)
@@ -122,9 +125,7 @@ namespace Alperunlu.Utils
 
         }
     }
-
-
-
+     
 
     [Serializable]
     public class LayoutRow
