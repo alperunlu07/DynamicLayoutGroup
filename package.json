@@ -1,0 +1,25 @@
+{
+    "name": "com.alperunlu.dynamiclayoutgroup",
+    "displayName": "Dynamic Layout Group",
+    "version": "1.0.0",
+    "unity": "2019.2",
+    "unityRelease": "0f1",
+    "description": "This package for set dynamicly ui item positions",
+    "license": "MIT",
+    "keywords": [
+        "dynamic",
+        "layout",
+        "ui"
+      ],
+    "author":
+    {
+        "name": "Alper Unlu",
+        "email": "alperunlu07@gmail.com",
+        "url": "https://github.com/alperunlu07"
+    },
+    "homepage": "https://github.com/alperunlu07/DynamicLayoutGroup",
+    "repository": {
+      "type": "git",
+      "url": "git@github.com:alperunlu07/DynamicLayoutGroup.git"
+    }
+}
